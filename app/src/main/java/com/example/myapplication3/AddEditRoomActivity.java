@@ -1,11 +1,13 @@
 package com.example.myapplication3;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ public class AddEditRoomActivity extends AppCompatActivity {
     private EditText etId, etName, etPrice, etTenantName, etTenantPhone;
     private CheckBox cbIsOccupied;
     private Button btnSave, btnEdit;
+    private ImageButton btnCall;
     private Room roomToEdit;
     private boolean isEditMode = false;
 
@@ -33,6 +36,7 @@ public class AddEditRoomActivity extends AppCompatActivity {
         etTenantPhone = findViewById(R.id.etTenantPhone);
         btnSave = findViewById(R.id.btnSave);
         btnEdit = findViewById(R.id.btnEdit);
+        btnCall = findViewById(R.id.btnCall);
 
         roomToEdit = (Room) getIntent().getSerializableExtra("ROOM");
         
@@ -49,6 +53,13 @@ public class AddEditRoomActivity extends AppCompatActivity {
             setFieldsEnabled(false);
             btnEdit.setVisibility(View.VISIBLE);
             btnSave.setVisibility(View.GONE);
+
+            // Hiển thị icon gọi điện nếu phòng đã cho thuê và có số điện thoại
+            if (roomToEdit.isOccupied() && roomToEdit.getTenantPhone() != null && !roomToEdit.getTenantPhone().isEmpty()) {
+                btnCall.setVisibility(View.VISIBLE);
+            } else {
+                btnCall.setVisibility(View.GONE);
+            }
         } else {
             // Chế độ Thêm mới
             isEditMode = false;
@@ -56,6 +67,7 @@ public class AddEditRoomActivity extends AppCompatActivity {
             etId.setEnabled(false);
             btnEdit.setVisibility(View.GONE);
             btnSave.setVisibility(View.VISIBLE);
+            btnCall.setVisibility(View.GONE);
             setFieldsEnabled(true);
         }
 
@@ -63,9 +75,19 @@ public class AddEditRoomActivity extends AppCompatActivity {
             setFieldsEnabled(true);
             btnEdit.setVisibility(View.GONE);
             btnSave.setVisibility(View.VISIBLE);
+            btnCall.setVisibility(View.GONE); // Ẩn nút gọi khi đang sửa
         });
 
         btnSave.setOnClickListener(v -> saveRoom());
+
+        btnCall.setOnClickListener(v -> {
+            String phoneNumber = etTenantPhone.getText().toString().trim();
+            if (!phoneNumber.isEmpty()) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                startActivity(callIntent);
+            }
+        });
     }
 
     private void setFieldsEnabled(boolean enabled) {
@@ -89,7 +111,7 @@ public class AddEditRoomActivity extends AppCompatActivity {
         }
 
         double price = Double.parseDouble(priceStr);
-        String id = isEditMode ? roomToEdit.getId() : ""; // ID sẽ được gán ở MainActivity nếu là thêm mới
+        String id = isEditMode ? roomToEdit.getId() : "";
 
         Room room = new Room(id, name, price, isOccupied, tenantName, tenantPhone);
 
