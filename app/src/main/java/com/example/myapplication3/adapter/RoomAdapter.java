@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication3.R;
 import com.example.myapplication3.model.Room;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
@@ -40,7 +41,10 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         Room room = roomList.get(position);
         holder.tvRoomName.setText(room.getName());
-        holder.tvRoomPrice.setText("Giá: " + room.getPrice() + " VNĐ");
+        
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedPrice = formatter.format(room.getPrice()).replace(',', '.') + " VNĐ";
+        holder.tvRoomPrice.setText("Giá: " + formattedPrice);
         
         if (room.isOccupied()) {
             holder.tvRoomStatus.setText("Tình trạng: Đã thuê");

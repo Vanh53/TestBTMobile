@@ -1,9 +1,7 @@
 package com.example.myapplication3;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -33,6 +31,10 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnIte
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Room newRoom = (Room) result.getData().getSerializableExtra("ROOM");
                     if (newRoom != null) {
+                        // Tự động tăng mã phòng
+                        String nextId = generateNextId();
+                        newRoom.setId(nextId);
+                        
                         roomList.add(newRoom);
                         adapter.notifyItemInserted(roomList.size() - 1);
                     }
@@ -75,6 +77,22 @@ public class MainActivity extends AppCompatActivity implements RoomAdapter.OnIte
             Intent intent = new Intent(MainActivity.this, AddEditRoomActivity.class);
             addRoomLauncher.launch(intent);
         });
+    }
+
+    private String generateNextId() {
+        int maxId = 0;
+        for (Room room : roomList) {
+            try {
+                // Giả sử mã có dạng R001, lấy phần số
+                int idNum = Integer.parseInt(room.getId().substring(1));
+                if (idNum > maxId) {
+                    maxId = idNum;
+                }
+            } catch (Exception e) {
+                // Bỏ qua nếu mã không đúng định dạng
+            }
+        }
+        return String.format("R%03d", maxId + 1);
     }
 
     @Override

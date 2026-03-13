@@ -9,7 +9,9 @@
         android:id="@+id/etRoomId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Mã phòng" />
+        android:hint="Mã phòng"
+        android:focusable="false"
+        android:clickable="false" />
 
     <EditText
         android:id="@+id/etRoomName"
@@ -44,10 +46,18 @@
         android:inputType="phone" />
 
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/btnEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:text="Sửa"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Lưu" />
 
 </LinearLayout>
