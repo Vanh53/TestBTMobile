@@ -71,11 +71,28 @@ public class AddEditRoomActivity extends AppCompatActivity {
             setFieldsEnabled(true);
         }
 
+        // Thiết lập listener cho CheckBox
+        cbIsOccupied.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Chỉ áp dụng logic này khi đang ở chế độ chỉnh sửa hoặc thêm mới
+            if (btnSave.getVisibility() == View.VISIBLE) {
+                etTenantName.setEnabled(isChecked);
+                etTenantPhone.setEnabled(isChecked);
+                if (!isChecked) {
+                    etTenantName.setText("");
+                    etTenantPhone.setText("");
+                }
+            }
+        });
+
         btnEdit.setOnClickListener(v -> {
             setFieldsEnabled(true);
             btnEdit.setVisibility(View.GONE);
             btnSave.setVisibility(View.VISIBLE);
             btnCall.setVisibility(View.GONE); // Ẩn nút gọi khi đang sửa
+            
+            // Cập nhật trạng thái tenant fields dựa trên CheckBox hiện tại
+            etTenantName.setEnabled(cbIsOccupied.isChecked());
+            etTenantPhone.setEnabled(cbIsOccupied.isChecked());
         });
 
         btnSave.setOnClickListener(v -> saveRoom());
@@ -94,8 +111,15 @@ public class AddEditRoomActivity extends AppCompatActivity {
         etName.setEnabled(enabled);
         etPrice.setEnabled(enabled);
         cbIsOccupied.setEnabled(enabled);
-        etTenantName.setEnabled(enabled);
-        etTenantPhone.setEnabled(enabled);
+        
+        // Tenant fields phụ thuộc vào cả `enabled` chung và trạng thái CheckBox
+        if (!enabled) {
+            etTenantName.setEnabled(false);
+            etTenantPhone.setEnabled(false);
+        } else {
+            etTenantName.setEnabled(cbIsOccupied.isChecked());
+            etTenantPhone.setEnabled(cbIsOccupied.isChecked());
+        }
     }
 
     private void saveRoom() {
