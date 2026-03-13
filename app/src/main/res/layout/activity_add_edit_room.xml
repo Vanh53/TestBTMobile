@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etRoomId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mã phòng" />
+
+    <EditText
+        android:id="@+id/etRoomName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên phòng" />
+
+    <EditText
+        android:id="@+id/etRoomPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá thuê"
+        android:inputType="numberDecimal" />
+
+    <CheckBox
+        android:id="@+id/cbIsOccupied"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đã thuê" />
+
+    <EditText
+        android:id="@+id/etTenantName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên người thuê" />
+
+    <EditText
+        android:id="@+id/etTenantPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Số điện thoại"
+        android:inputType="phone" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Lưu" />
+
+</LinearLayout>
